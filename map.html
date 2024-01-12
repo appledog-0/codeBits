@@ -1,125 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  
-       
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="styles.css">
-            <title>Ambulance Tracking System</title>
-        </head>
-        <body>
-        
-        <header>
-            <h1>Ambulance Tracking System</h1>
-        </header>
-        
-        <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="map.html">Map</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-            </ul>
-        </nav>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPS TRACKER</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Ambulance Tracking System</title>
+    </head>
+    <body>
+    
+    <header>
+        <h1>Ambulance Tracking System</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <style>
-        #map {
-            height: 350px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Location Map</title>
+  <!-- Include Leaflet CSS and JavaScript -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <h1>Map User and Ambulance Location</h1>
-    <div>
-        <label for="ambulanceId">Enter Ambulance ID:</label>
-        <input type="text" id="ambulanceId" placeholder="Enter ambulance ID">
-        <button onclick="showAmbulanceLocation()">Show Location</button>
-    </div>
-    <div id="map"></div>
-    <script>
-        var map = L.map('map');
-        map.setView([28.3974, 84.1258], 7); // Set initial map view to Nepal
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
 
-        navigator.geolocation.watchPosition(success, error);
+  <!-- Create a div to hold the map -->
+  <div id="map" style="height: 400px;"></div>
 
-        let marker, circle, zoomed;
+  <p id="lat">Latitude: </p>
+  <p id="lng"> Longitude: </p>
 
-        function success(pos) {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const accuracy = pos.coords.accuracy;
+  <script>
+    // Your JavaScript code will go here
+    
+  document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the map
+    var map = L.map('map').setView([0, 0], 13);
 
-            if (marker) {
-                map.removeLayer(marker);
-                map.removeLayer(circle);
-            }
-            marker = L.marker([lat, lng]).addTo(map);
-            circle = L.circle([lat, lng], {
-                radius: accuracy
-            }).addTo(map);
+    // Add a tile layer (you can use other tile providers)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-            if (!zoomed) {
-                zoomed = map.fitBounds(circle.getBounds());
-            }
-        }
+    // Get the user's current location using Geolocation API
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        
+        document.getElementById('lat').textContent = 'Latitude: ' + lat;
+          document.getElementById('lng').textContent = 'Longitude: ' + lon;
 
-        function error(err) {
-            if (err.code === 1) {
-                alert("Please allow geoLocation access");
-            } else {
-                alert("Cannot get the current location");
-            }
-        }
+        console.log(lat);
+        console.log(lon);
+        // Update the map with the user's location
+        map.setView([lat, lon], 13);
 
-        function showAmbulanceLocation() {
-            const ambulanceId = document.getElementById('ambulanceId').value;
-            getAmbulanceLocation(ambulanceId);
-        }
+        // Add a marker at the user's location
+        L.marker([lat, lon]).addTo(map)
+          .bindPopup('Your Phone Location').openPopup();
+      }, function (error) {
+        console.error('Error getting location:', error.message);
+      });
+    } else {
+      console.error('Geolocation is not supported by your browser');
+    }
+  });
+</script>
+  </script>
 
-        // Function to display an ambulance on the map
-        function displayAmbulanceOnMap(ambulance) {
-            L.marker([ambulance.latitude, ambulance.longitude])
-                .addTo(map)
-                .bindPopup('Ambulance ID: ' + ambulance.id)
-                .openPopup();
-        }
-
-        // Function to get an ambulance location by ID
-        function getAmbulanceLocation(ambulanceId) {
-            // Sample list of ambulance IDs with their coordinates
-            const ambulanceData = {
-                "061-412512": { "latitude": 28.3974, "longitude": 84.1258 },
-                "061-539858": { "latitude": 28.4, "longitude": 84.12 },
-                "061-5275534": { "latitude": 28.42, "longitude": 84.15 },
-                "061-533231": { "latitude": 28.39, "longitude": 84.13 },
-                "061-520159": { "latitude": 28.41, "longitude": 84.14 },
-                "01 4494816": { "latitude": 27.70169, "longitude": 85.3206 }
-            };
-
-            const ambulance = ambulanceData[ambulanceId];
-
-            if (ambulance) {
-                // Display the ambulance on the map
-                displayAmbulanceOnMap({ id: ambulanceId, ...ambulance });
-            } else {
-                alert("Ambulance not found!");
-            }
-        }
-    </script>
 </body>
 </html>
