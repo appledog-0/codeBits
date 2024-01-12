@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS TRACKER</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Map User and Ambulance Location</h1>
+    <div>
+        <label for="ambulanceId">Enter Ambulance ID:</label>
+        <input type="text" id="ambulanceId" placeholder="Enter ambulance ID">
+        <button onclick="showAmbulanceLocation()">Show Location</button>
+    </div>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map');
+        map.setView([28.3974, 84.1258], 7); // Set initial map view to Nepal
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        navigator.geolocation.watchPosition(success, error);
+
+        let marker, circle, zoomed;
+
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const accuracy = pos.coords.accuracy;
+
+            if (marker) {
+                map.removeLayer(marker);
+                map.removeLayer(circle);
+            }
+            marker = L.marker([lat, lng]).addTo(map);
+            circle = L.circle([lat, lng], {
+                radius: accuracy
+            }).addTo(map);
+
+            if (!zoomed) {
+                zoomed = map.fitBounds(circle.getBounds());
+            }
+        }
+
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow geoLocation access");
+            } else {
+                alert("Cannot get the current location");
+            }
+        }
+
+        function showAmbulanceLocation() {
+            const ambulanceId = document.getElementById('ambulanceId').value;
+            getAmbulanceLocation(ambulanceId);
+        }
+
+        // Function to display an ambulance on the map
+        function displayAmbulanceOnMap(ambulance) {
+            L.marker([ambulance.latitude, ambulance.longitude])
+                .addTo(map)
+                .bindPopup('Ambulance ID: ' + ambulance.id)
+                .openPopup();
+        }
+
+        // Function to get an ambulance location by ID
+        function getAmbulanceLocation(ambulanceId) {
+            // Sample list of ambulance IDs with their coordinates
+            const ambulanceData = {
+                "061-412512": { "latitude": 28.3974, "longitude": 84.1258 },
+                "061-539858": { "latitude": 28.4, "longitude": 84.12 },
+                "061-5275534": { "latitude": 28.42, "longitude": 84.15 },
+                "061-533231": { "latitude": 28.39, "longitude": 84.13 },
+                "061-520159": { "latitude": 28.41, "longitude": 84.14 },
+                "01 4494816": { "latitude": 27.70169, "longitude": 85.3206 }
+            };
+
+            const ambulance = ambulanceData[ambulanceId];
+
+            if (ambulance) {
+                // Display the ambulance on the map
+                displayAmbulanceOnMap({ id: ambulanceId, ...ambulance });
+            } else {
+                alert("Ambulance not found!");
+            }
+        }
+    </script>
+</body>
+</html>
