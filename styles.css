@@ -38,12 +38,21 @@ nav a:hover {
     background-color: white;
     color: black;
 }
+#ambulance {
+    text-align: center;
+}
+
+#ambulance img {
+    width: 100%; /* Make the image fill the width of the div */
+    max-height: none; /* Set a maximum height for the image */
+    border: 1px solid white; /* Add a border for style */
+}
 
 footer {
     background-color: #333;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 1px;
     position: fixed;
     bottom: 0;
     width: 100%;
