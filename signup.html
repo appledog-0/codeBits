@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Ambulance tracking system | signup</title></head>
+    <head>
+        <style>
+               .error{
+            color: red;
+            margin: 0px;
+        }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Ambulance Tracking System</title>
+    </head>
+    <body>
+    
+    <header>
+        <h1>Ambulance Tracking System</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+    <body style="font-family: tahoma; background-color: #e9ebee;">
+        <div id="bar" >
+          <div style=" font-size: 40px;"></div>
+            
+        </div>
+        <div id="login_bar">
+            <form action="login.html" id="myform" onsubmit="return clicked()">
+
+            Sign up to Ambulance tracking system<br><br>
+            <label for="User"> User
+            <input type="text" id="User" placeholder="Firstname"><br><br> 
+            
+            <input type="text" id="User" placeholder="Lastname"><br><br>
+            <p class="error" id="Usererror"></p>
+            </label>
+            <label for="Gender"style="font-weight:normal;">Gender:</label>
+
+            <input type="radio" name="Gender" value="male">male
+            <input type="radio" name="Gender" value="female">female<br><br>
+            <label for="Email"> 
+            <input type="email" id="Email" placeholder="Email"><br><br>
+            <p class="error" id="Emailerror"></p>
+        </label>
+        <label for="Password">
+            <input type="password" id="Password" placeholder="Password"><br><br>
+            <p class="error" id="Passworderror"></p>
+        </label>
+        <label for="CPassword">
+            <input type="password" id="CPassword" placeholder="retype password"><br><br>
+            </label>
+            <input type="submit" id="button" value="Sign up">
+               <br><br><br>    
+               <script src="form3.js"></script>
+        </div>
+        
+    </body>
+</html>
