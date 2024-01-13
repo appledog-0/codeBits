@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require 'db2.php';
 ?>
 <html lang="en">
 <head>
@@ -8,10 +8,8 @@ require 'db.php';
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
         <title>Ambulance Tracking System</title>
-        
     </head>
     <body>
-    
     <header>
         <h1>Ambulance Tracking System</h1>
     </header>
@@ -102,5 +100,4 @@ $lat = $_COOKIE['lat'];
 $lon = $_COOKIE['lon'];
 echo 'inserting $lat $lon';
 InsertLocation($lat, $lon);
-
 ?>

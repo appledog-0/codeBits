@@ -46,6 +46,5 @@ footer {
     padding: 1px;
     position: fixed;
     bottom: 0;
-    width: 10%;
-    height: 1px ;
+    width: 100%;
 }

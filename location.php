@@ -1,9 +1,8 @@
 <?php
 $dbhost = "localhost";
-
 $dbuser = "root";
 $dbpass = "";
-$db = "test";
+$db = "finaldata";
 
 $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
 if ($conn->connect_error) {
@@ -17,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     
     $lat = $_POST['lat'];
     $long = $_POST['lon'];
-    
     // echo $lat;
     // echo $long;
     $currenttime = date("Y-m-d H:i:s");
