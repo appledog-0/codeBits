@@ -1,56 +1,45 @@
-<?php
-session_start();
-
-include("db.php");
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $Email = $_POST['email'];
-    $Password = $_POST['password'];
-
-    if (!empty($Email) && !empty($Password) && !is_numeric($Email)) {
-        $query = "SELECT * FROM form WHERE email='$Email' LIMIT 1";
-        $result = mysqli_query($con, $query);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-            $user_data = mysqli_fetch_assoc($result);
-
-            if ($user_data['password'] == $Password) {
-                header("location: index.php");
-                die;
-            }
-        }
-
-        echo "<script type='text/javascript'>alert('Wrong username or password')</script>";
-    } else {
-        echo "<script type='text/javascript'>alert('Please enter valid information')</script>";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Ambulance tracking system | log in</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Ambulance Tracking System</title>
-</head>
-<body style="font-family: tahoma; background-color: #e9ebee;">
-    <form method="POST">
-        <div id="bar">
-            <div style="font-size: 40px;"></div>
+    <head>
+        
+        <title>Ambulance tracking system | log in</title></head>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="styles.css">
+            <title>Ambulance Tracking System</title>
+        </head>
+        <body>
+        
+        <header>
+            <h1>Ambulance Tracking System</h1>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="map.php">Map</a></li>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="signup.php">Sign Up</a></li>
+            </ul>
+        </nav>
+    
+    <body style="font-family: tahoma; background-color: #e9ebee;">
+       <form> <div id="bar" >
+          <div style=" font-size: 40px;"></div>
+            
         </div>
         <div id="login_bar">
+            
             Log in to Ambulance tracking system<br><br>
-            <label>Email</label>
-            <input type="email" id="text" placeholder="Email" name="email"><br><br>
-            <label>Password</label>
-            <input type="password" id="text" placeholder="Password" name="password"><br><br>
-            <input type="submit" id="button" value="Log in">
-            <br><br><br>
-            <p>Don't have an account? <a href="signup.php">Sign up Here</a></p>
+            
+            <form action="index.php" method="post">
+            <input type="email" id="text" placeholder="Email"><br><br>
+            <input type="password" id="text" placeholder="password"><br><br>
+            <button type="submit">Submit</button>
+               <br><br><br> 
         </div>
-    </form>
-</body>
+       </form>
+        
+    </body>
 </html>
